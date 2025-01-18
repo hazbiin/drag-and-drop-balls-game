@@ -1,19 +1,28 @@
+const startBtn = document.getElementById('start-btn');
+const screens = document.querySelectorAll('.screen');
 const jars = document.querySelectorAll('.jar');
 const balls = document.querySelectorAll('.ball');
 const ballsContainer = document.querySelector('.balls-container');
 
 let activeBall = null;
-let topMostBallInJar = null;
+let lastInteractedJar = null;
+
+// startBtn.addEventListener("click", () => {
+//     screens[0].classList.add('up');
+// });
 
 balls.forEach((ball) => {
     ball.addEventListener("click", (e) => {
         e.stopPropagation();
-        activeBall = ball;
+        if(!activeBall && !ball.classList.contains('disable-click')){
+            activeBall = ball;
+        }
     });
 });
-
-jars.forEach((jar,index) => {
+jars.forEach((jar) => {
     jar.addEventListener("click", (e) => {
+        const ballsInJar = jar.querySelectorAll('.ball');
+        topMostBallInJar = ballsInJar[ballsInJar.length - 1];
 
         if(activeBall){
             jar.appendChild(activeBall);
@@ -26,110 +35,31 @@ jars.forEach((jar,index) => {
             });
 
             activeBall = null;
-        }
+            lastInteractedJar = jar;
+        }else if(topMostBallInJar){
 
-        if(!e.target.classList.contains('ball')){
-            const ballsInJar = jar.querySelectorAll('.ball');
-            topMostBallInJar = ballsInJar[ballsInJar.length - 1];
-        }
-
-        if(topMostBallInJar){
-            jar.appendChild(topMostBallInJar);
-            // if(e.target !== jar){
-            //     console.log(topMostBallInJar)
-                
-            // }
+            activeBall = topMostBallInJar;
+            lastInteractedJar = jar;
         }
     });
 }); 
-
 ballsContainer.addEventListener("click",() => {
-    if(topMostBallInJar && !ballsContainer.contains(topMostBallInJar)){
-        ballsContainer.appendChild(topMostBallInJar);
-        topMostBallInJar.classList.remove('position');
-        topMostBallInJar.classList.remove('disable-click');
-        topMostBallInJar = null;
+
+    if(lastInteractedJar){
+        const ballsInLastClickedJar = lastInteractedJar.querySelectorAll('.ball');
+        const topMostBallInLastClickedJar = ballsInLastClickedJar[ballsInLastClickedJar.length - 1];
+
+        if(topMostBallInLastClickedJar && !ballsContainer.contains(topMostBallInLastClickedJar)){
+            ballsContainer.appendChild(topMostBallInLastClickedJar);
+            topMostBallInLastClickedJar.classList.remove('position');
+            topMostBallInLastClickedJar.classList.remove('disable-click');
+
+            const remainingBallsInJar = lastInteractedJar.querySelectorAll('.ball');
+            remainingBallsInJar.forEach((remainingBall, index) =>{
+                remainingBall.style.bottom = `${30 * index}px`;
+            });
+
+            activeBall = null;
+        }
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// let activeBalls = [];
-// let allBallsInSelectedJar = [];
-
-// jars.forEach(jar => {
-//     jar.addEventListener("click", (e) => {
-
-//         jar.classList.toggle('selected');
-//         insertBalls(jar);
-//     });
-// });
-
-// balls.forEach(ball => {
-//     ball.addEventListener("click", (e) => {
-//         e.stopPropagation();
-        
-//         ball.classList.toggle('selected');
-//         activeBalls.push(ball);
-//     });
-// });
-
-// function insertBalls(jar){
-//     // console.log(activeBalls);
-//     jar.appendChild(activeBalls[activeBalls.length - 1]);
-
-//     const allBallsInJar = jar.querySelectorAll('.ball');
-//     allBallsInSelectedJar = allBallsInJar;
-//     console.log(allBallsInSelectedJar);
-
-//     // if(!jar.querySelector('.ball')){
-//     //     console.log("here")
-//     //     jar.appendChild(activeBalls[activeBalls.length - 1]);
-//     // }else{
-//     //     console.log("false")
-//     //     const allBallsInJar = jar.querySelectorAll('.ball');
-//     //     console.log(allBallsInJar)
-//     // }
-
-//     const balls = jar.querySelectorAll('.ball');
-//     balls.forEach((ball,index) => {
-//         ball.classList.add('position');
-//         ball.style.bottom = `${30 * index}px`;
-//     });
-// }
-
-// // function changeBalls(jar){
-// //     jar.appendChild(allBallsInSelectedJar[allBallsInSelectedJar.length - 1]);
-// // }
