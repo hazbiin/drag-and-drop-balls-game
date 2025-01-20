@@ -11,8 +11,9 @@ body{
     text-align: center;
 }
 .screen{
-    background: linear-gradient(to top, #977dff, #f2e6ee);
-    /* background: linear-gradient(to top, #0033ff, #977dff); */
+    /* background: linear-gradient(45deg, #392f62, #dbdada); */
+    /* background: linear-gradient(45deg, #f7f7f7, #ececec); */
+    background: linear-gradient(45deg, rgb(30, 30, 30), rgb(0, 0, 0));
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,62 +41,93 @@ body{
 .heading-container{
     margin-bottom:25px;
 }
-.heading-container h2{
+.heading-container h2 {
     font-size: 25px;
     line-height: 25px;
-    letter-spacing: 2px; 
+    letter-spacing: 2px;
+    color: #fff;
+    border-radius: 20px;
+    padding: 10px;
+    background: linear-gradient(90deg, #776783, #4a1d7c);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation:  letterSpacing 2s ease-in-out infinite;
+}
+@keyframes letterSpacing {
+    0% {
+        letter-spacing: 2px;
+    }
+    50% {
+        letter-spacing: 6px;
+    }
+    100% {
+        letter-spacing: 2px;
+    }
 }
 .jars-container{
     display: flex;
     gap: 20px;
     align-items: center;
     justify-content: center;
-    width: 90%;
+    width: 80%;
     margin: 0 auto;
     padding: 20px;
     padding-top: 80px;
-    margin-bottom:10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(151, 125, 255, 0.3), 
-                0 2px 15px rgba(242, 230, 238, 0.4), 
-                inset 0 1px 3px rgba(255, 255, 255, 0.5);
+    margin-bottom:15px;
+    border-radius: 20px;
     border: 1px solid rgb(197, 197, 197);
+    box-shadow: 0 0 4px rgb(106, 81, 195), 
+    0 0 4px rgba(242, 230, 238, 0.1), 
+    0 0 4px rgba(255, 255, 255, 0.05);
+    
 }
 .jar{
     width: 60px;
     height: 170px;
-    /* border: 1px solid rgb(197, 197, 197); */
-    /* border-top:2px solid transparent; */
+    border: 1px solid rgb(197, 197, 197);
     border-radius: 10px;
     cursor: pointer;
     position: relative;
-    box-shadow: 0 4px 10px rgba(151, 125, 255, 0.3), 
-                0 2px 15px rgba(242, 230, 238, 0.4), 
-                inset 0 1px 3px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 4px rgb(106, 81, 195), 
+    0 0 4px rgba(242, 230, 238, 0.1), 
+    0 0 4px rgba(255, 255, 255, 0.05);
+    animation: glow 2s ease-in-out infinite alternate;
+    /* background: linear-gradient(45deg, #816491,rgb(117, 87, 237)); */
 }
-/* .jar.selected{
-    background-color: rgb(223, 168, 223);
-} */
-.balls-outer-container{
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 4px rgb(106, 81, 195), 
+                    0 0 4px rgba(242, 230, 238, 0.1), 
+                    0 0 4px rgba(255, 255, 255, 0.05);
+    }
+    100% {
+        box-shadow: 0 0 10px rgb(106, 81, 195), 
+                    0 0 10px rgba(242, 230, 238, 0.2), 
+                    0 0 10px rgba(255, 255, 255, 0.1);
+    }
+}
+.balls-outer-container {
     display: flex;
     justify-content: flex-start;
     overflow: hidden;
-    width: 90%;
-    height: 70px;
+    width: 80%;
+    height: 80px;
     margin: 0 auto;
-    box-shadow: 0 4px 10px rgba(151, 125, 255, 0.3), 
-                0 2px 15px rgba(242, 230, 238, 0.4), 
-                inset 0 1px 3px rgba(255, 255, 255, 0.5);
-    border-radius: 10px; 
+    border-radius: 20px;
     border: 1px solid rgb(197, 197, 197);
+    box-shadow: 0 0 4px rgb(106, 81, 195), 
+                0 0 4px rgba(242, 230, 238, 0.1), 
+                0 0 4px rgba(255, 255, 255, 0.05);
+    padding: 0 15px; 
 }
-.balls-container{
+.balls-container {
     display: flex;
     align-items: center;
-    column-gap: 5px;
+    column-gap: 15px;
     overflow-x: auto;
     width: 100%;
-    padding: 15px 10px;
+    padding: 0 5px;
     scroll-behavior: smooth;
     flex-wrap: nowrap;
 }
@@ -105,7 +137,7 @@ body{
 .ball{
     width: 40px;
     height: 40px;
-    border: 1px solid rgb(197, 197, 197);
+    border: 1px solid rgb(155, 155, 155);
     border-radius: 50%;
     text-align: center;
     display: flex;
@@ -116,11 +148,12 @@ body{
     font-size: 13px;
     font-weight: bold;
     color: #fff;
-    background: radial-gradient(circle, #977dff, #846dde);
-    box-shadow: 0 4px 10px rgba(151, 125, 255, 0.3), 
-                0 2px 15px rgba(242, 230, 238, 0.4), 
-                inset 0 1px 3px rgba(255, 255, 255, 0.5);
+    background: linear-gradient(45deg, #816491,rgb(117, 87, 237));
+    box-shadow: 0 0 4px rgb(106, 81, 195), 
+    0 0 4px rgba(242, 230, 238, 0.1), 
+    0 0 4px rgba(255, 255, 255, 0.05);
     transition: box-shadow 0.3s ease, transform 0.2s ease;
+    animation: glow 2s ease-in-out infinite alternate;
 }
 .ball.position{
     position: absolute;
@@ -131,7 +164,33 @@ body{
 .ball.disable-click{
     pointer-events: none;
 }
-/* .ball.selected{
-    background-color: rgb(107, 75, 137);
-    color: #fff;
-} */
+@media screen and (min-width: 768px){
+    .heading-container h2{
+        font-size: 27px;
+        line-height: 27px;
+    }
+    .jars-container{
+        gap: 30px;
+    }
+    .jar{
+        width: 80px;
+        height: 210px;
+    }
+    .balls-container{
+        justify-content: space-around;
+    }
+    .ball{
+        width: 50px;
+        height: 50px;
+        font-size: 15px;
+    }
+}
+@media screen and (min-width:1440px){
+    .heading-container h2{
+        font-size: 30px;
+        line-height: 30px;
+    }
+    .jars-container{
+        gap: 50px;
+    }
+}

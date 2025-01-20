@@ -4,12 +4,15 @@ const jars = document.querySelectorAll('.jar');
 const balls = document.querySelectorAll('.ball');
 const ballsContainer = document.querySelector('.balls-container');
 
+const restartBtn = document.getElementById('restart-btn');
+
+
 let activeBall = null;
 let lastInteractedJar = null;
 
-startBtn.addEventListener("click", () => {
-    screens[0].classList.add('up');
-});
+// startBtn.addEventListener("click", () => {
+//     screens[0].classList.add('up');
+// });
 
 balls.forEach((ball) => {
     ball.addEventListener("click", (e) => {
@@ -33,7 +36,13 @@ jars.forEach((jar) => {
                 const ballsInJar = jar.querySelectorAll('.ball');
                 ballsInJar.forEach( (ballInJar,index) => {
                     ballInJar.classList.add('position');
-                    ballInJar.style.bottom = `${40 * index}px`
+                    if(window.innerWidth >= 768){
+                        ballInJar.style.bottom = `${50 * index}px`
+    
+                    }else {
+                        ballInJar.style.bottom = `${40 * index}px`
+                    }
+                    
                 });
 
                 activeBall = null;
@@ -65,10 +74,31 @@ ballsContainer.addEventListener("click",() => {
 
             const remainingBallsInJar = lastInteractedJar.querySelectorAll('.ball');
             remainingBallsInJar.forEach((remainingBall, index) =>{
-                remainingBall.style.bottom = `${40 * index}px`;
+                if(window.innerWidth >= 768){
+                    remainingBall.style.bottom = `${50 * index}px`;
+
+                }else {
+                    remainingBall.style.bottom = `${40 * index}px`;
+                }
+               
             });
 
             activeBall = null;
         }
     }
+});
+
+restartBtn.addEventListener("click", () => {
+    activeBall = null;
+    lastInteractedJar = null;
+
+    jars.forEach((jar) => {
+        const ballsInJar = jar.querySelectorAll('.ball');
+        ballsInJar.forEach((ball) => {
+            ballsContainer.appendChild(ball);
+
+            ball.classList.remove('position', 'disable-click');
+            ball.style.bottom = '';
+        });
+    })
 });
