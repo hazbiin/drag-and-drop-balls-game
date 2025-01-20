@@ -100,20 +100,7 @@ body{
     box-shadow: 0 0 4px rgb(106, 81, 195), 
     0 0 4px rgba(242, 230, 238, 0.1), 
     0 0 4px rgba(255, 255, 255, 0.05);
-    animation: glow 2s ease-in-out infinite alternate;
     /* background: linear-gradient(45deg, #816491,rgb(117, 87, 237)); */
-}
-@keyframes glow {
-    0% {
-        box-shadow: 0 0 4px rgb(106, 81, 195), 
-                    0 0 4px rgba(242, 230, 238, 0.1), 
-                    0 0 4px rgba(255, 255, 255, 0.05);
-    }
-    100% {
-        box-shadow: 0 0 12px rgb(106, 81, 195), 
-                    0 0 12px rgba(242, 230, 238, 0.2), 
-                    0 0 12px rgba(255, 255, 255, 0.1);
-    }
 }
 .balls-outer-container {
     display: flex;
@@ -161,7 +148,6 @@ body{
     0 0 4px rgba(242, 230, 238, 0.1), 
     0 0 4px rgba(255, 255, 255, 0.05);
     transition: box-shadow 0.3s ease, transform 0.2s ease;
-    animation: glow 2s ease-in-out infinite alternate;
 }
 .ball:hover{
     opacity: 0.8;
@@ -169,6 +155,13 @@ body{
 .ball:active{
     transform: scale(0.95);
     transition: transform 0.2s ease;
+}
+.ball.on-move{
+    background: #d2c0e7;
+}
+.ball.was-moved{
+    opacity: 0.7;
+    border: 1px dashed #220a3d;
 }
 .ball.position{
     position: absolute;

@@ -23,25 +23,19 @@ for(let i = 0; i < numJars; i++){
             if(ballsCount < 4){
                 jar.appendChild(activeBall);
                 activeBall.classList.add('disable-click');
+                activeBall.classList.remove('on-move','was-moved');
 
                 const updatedBallsInJar = jar.querySelectorAll('.ball');
-                if(updatedBallsInJar.length > 0){
-                    jar.style.animationPlayState = 'paused';
-                    updatedBallsInJar.forEach( (ballInJar,index) => {
-                        ballInJar.style.animationPlayState = 'paused';
-                        ballInJar.classList.add('position');
-                        if(window.innerWidth >= 768){
-                            ballInJar.style.bottom = `${55 * index}px`
-        
-                        }else {
-                            ballInJar.style.bottom = `${45 * index}px`
-                        }
-                    });
-                }
-
-                if(updatedBallsInJar.length === 0) {
-                    jar.style.animationPlayState = 'running';
-                }
+                updatedBallsInJar.forEach( (ballInJar,index) => {
+                    ballInJar.style.animationPlayState = 'paused';
+                    ballInJar.classList.add('position');
+                    if(window.innerWidth >= 768){
+                        ballInJar.style.bottom = `${55 * index}px`
+    
+                    }else {
+                        ballInJar.style.bottom = `${45 * index}px`
+                    }
+                });
 
                 activeBall = null;
                 lastInteractedJar = jar;
@@ -50,8 +44,9 @@ for(let i = 0; i < numJars; i++){
                 window.alert('Oops! this container is full, choose another contianer to insert the ball!');
             }
         }else if(topMostBallInJar){
-
+            
             activeBall = topMostBallInJar;
+            activeBall.classList.add('on-move');
             lastInteractedJar = jar;
             jarClickedOnce = true;
         }else {
@@ -72,6 +67,7 @@ for(let i = 1; i <= numBalls; i++){
         e.stopPropagation();
         if(!activeBall && !ball.classList.contains('disable-click')){
             activeBall = ball;
+            activeBall.classList.add('on-move');
         }
     });
 }
@@ -79,13 +75,12 @@ for(let i = 1; i <= numBalls; i++){
 ballsContainer.addEventListener("click",() => {
     if(lastInteractedJar && jarClickedOnce){
         const ballsInLastClickedJar = lastInteractedJar.querySelectorAll('.ball');
-        const topMostBallInLastClickedJar = ballsInLastClickedJar[ballsInLastClickedJar.length - 1];
+        let topMostBallInLastClickedJar = ballsInLastClickedJar[ballsInLastClickedJar.length - 1];
 
         if(topMostBallInLastClickedJar && !ballsContainer.contains(topMostBallInLastClickedJar)){
             ballsContainer.appendChild(topMostBallInLastClickedJar);
-            topMostBallInLastClickedJar.style.animationPlayState = 'running';
-            topMostBallInLastClickedJar.classList.remove('position');
-            topMostBallInLastClickedJar.classList.remove('disable-click');
+            topMostBallInLastClickedJar.classList.remove('position','disable-click','on-move');
+            topMostBallInLastClickedJar.classList.add('was-moved');
 
             const remainingBallsInJar = lastInteractedJar.querySelectorAll('.ball');
             remainingBallsInJar.forEach((remainingBall, index) =>{
@@ -97,12 +92,9 @@ ballsContainer.addEventListener("click",() => {
                 }
             });
 
-            if (remainingBallsInJar.length === 0) {
-                lastInteractedJar.style.animationPlayState = 'running';
-            }
-
             activeBall = null;
             jarClickedOnce = false;
+            topMostBallInLastClickedJar = null;
         }
     }
 });
@@ -113,14 +105,26 @@ restartBtn.addEventListener("click", () => {
     jarClickedOnce = false;
 
     jarsContainer.querySelectorAll('.jar').forEach((jar) => {
-        jar.style.animationPlayState = 'running';
-        const ballsInJar = jar.querySelectorAll('.ball');
-        ballsInJar.forEach((ball) => {
-            ballsContainer.appendChild(ball);
-            ball.style.animationPlayState = 'running';
-
-            ball.classList.remove('position', 'disable-click');
-            ball.style.bottom = '';
+        const ballInJar = jar.querySelectorAll('.ball');
+        ballInJar.forEach((ball) => {
+            ball.remove();
         });
-    })
+    });
+
+    ballsContainer.innerHTML = '';
+
+    for(let i = 1; i <= numBalls; i++){
+        const ball = document.createElement('div');
+        ball.classList.add('ball');
+        ball.textContent = i;
+        ballsContainer.appendChild(ball);
+
+        ball.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if(!activeBall && !ball.classList.contains('disable-click')){
+                activeBall = ball;
+                activeBall.classList.add('move-on');
+            }
+        });
+    }
 });
