@@ -1,21 +1,19 @@
-const startBtn = document.getElementById('start-btn');
-const jars = document.querySelectorAll('.jar');
-const balls = document.querySelectorAll('.ball');
+const jarsContainer = document.querySelector('.jars-container');
 const ballsContainer = document.querySelector('.balls-container');
 const restartBtn = document.getElementById('restart-btn');
 
+const numJars = 3;
+const numBalls = 9;
+
 let activeBall = null;
 let lastInteractedJar = null;
+let jarClickedOnce = false;
 
-balls.forEach((ball) => {
-    ball.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if(!activeBall && !ball.classList.contains('disable-click')){
-            activeBall = ball;
-        }
-    });
-});
-jars.forEach((jar) => {
+for(let i = 0; i < numJars; i++){
+    const jar = document.createElement('div');
+    jar.classList.add('jar');
+    jarsContainer.appendChild(jar);
+
     jar.addEventListener("click", (e) => {
         const ballsInJar = jar.querySelectorAll('.ball');
         const ballsCount = ballsInJar.length;
@@ -47,26 +45,45 @@ jars.forEach((jar) => {
 
                 activeBall = null;
                 lastInteractedJar = jar;
+                jarClickedOnce = true;
             }else {
-                window.alert('this container is full, choose another contianer to insert the ball');
+                window.alert('Oops! this container is full, choose another contianer to insert the ball!');
             }
         }else if(topMostBallInJar){
 
             activeBall = topMostBallInJar;
             lastInteractedJar = jar;
+            jarClickedOnce = true;
         }else {
             lastInteractedJar = jar
+            jarClickedOnce = true;
         }
     });
-}); 
-ballsContainer.addEventListener("click",() => {
+}
 
-    if(lastInteractedJar){
+
+for(let i = 1; i <= numBalls; i++){
+    const ball = document.createElement('div');
+    ball.classList.add('ball');
+    ball.textContent = i;
+    ballsContainer.appendChild(ball);
+
+    ball.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if(!activeBall && !ball.classList.contains('disable-click')){
+            activeBall = ball;
+        }
+    });
+}
+
+ballsContainer.addEventListener("click",() => {
+    if(lastInteractedJar && jarClickedOnce){
         const ballsInLastClickedJar = lastInteractedJar.querySelectorAll('.ball');
         const topMostBallInLastClickedJar = ballsInLastClickedJar[ballsInLastClickedJar.length - 1];
 
         if(topMostBallInLastClickedJar && !ballsContainer.contains(topMostBallInLastClickedJar)){
             ballsContainer.appendChild(topMostBallInLastClickedJar);
+            topMostBallInLastClickedJar.style.animationPlayState = 'running';
             topMostBallInLastClickedJar.classList.remove('position');
             topMostBallInLastClickedJar.classList.remove('disable-click');
 
@@ -85,6 +102,7 @@ ballsContainer.addEventListener("click",() => {
             }
 
             activeBall = null;
+            jarClickedOnce = false;
         }
     }
 });
@@ -92,11 +110,14 @@ ballsContainer.addEventListener("click",() => {
 restartBtn.addEventListener("click", () => {
     activeBall = null;
     lastInteractedJar = null;
+    jarClickedOnce = false;
 
-    jars.forEach((jar) => {
+    jarsContainer.querySelectorAll('.jar').forEach((jar) => {
+        jar.style.animationPlayState = 'running';
         const ballsInJar = jar.querySelectorAll('.ball');
         ballsInJar.forEach((ball) => {
             ballsContainer.appendChild(ball);
+            ball.style.animationPlayState = 'running';
 
             ball.classList.remove('position', 'disable-click');
             ball.style.bottom = '';

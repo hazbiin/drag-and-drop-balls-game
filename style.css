@@ -11,9 +11,6 @@ body{
     text-align: center;
 }
 .screen{
-    /* background: linear-gradient(45deg, #392f62, #dbdada); */
-    /* background: linear-gradient(45deg, #f7f7f7, #ececec); */
-    /* background: linear-gradient(45deg, rgb(30, 30, 30), rgb(0, 0, 0)); */
     background-color: black;
     display: flex;
     flex-direction: column;
@@ -23,22 +20,6 @@ body{
     width: 100vw;
     transition: all 0.5s ease-out;
 }
-.screen.up{
-    margin-top: -100vh;
-}
-.game-screen{
-    position: relative;
-}
-/* .instructions-container{
-    position:absolute;
-    top: 10px;
-    left: 16px;
-} */
-/* .settings-container{
-    position: absolute;
-    top: 10px;
-    right: 16px;
-} */
 .heading-container{
     margin-bottom:20px;
 }
@@ -71,6 +52,12 @@ body{
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+.restart-btn:hover{
+    opacity: 0.8;
+}
+.restart-btn:active{
+    transform: scale(0.95);
 }
 .restart-btn i {
     font-size: 14px;
@@ -175,6 +162,9 @@ body{
     0 0 4px rgba(255, 255, 255, 0.05);
     transition: box-shadow 0.3s ease, transform 0.2s ease;
     animation: glow 2s ease-in-out infinite alternate;
+}
+.ball:hover{
+    opacity: 0.8;
 }
 .ball:active{
     transform: scale(0.95);
