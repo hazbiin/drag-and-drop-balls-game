@@ -1,18 +1,11 @@
 const startBtn = document.getElementById('start-btn');
-const screens = document.querySelectorAll('.screen');
 const jars = document.querySelectorAll('.jar');
 const balls = document.querySelectorAll('.ball');
 const ballsContainer = document.querySelector('.balls-container');
-
 const restartBtn = document.getElementById('restart-btn');
-
 
 let activeBall = null;
 let lastInteractedJar = null;
-
-// startBtn.addEventListener("click", () => {
-//     screens[0].classList.add('up');
-// });
 
 balls.forEach((ball) => {
     ball.addEventListener("click", (e) => {
@@ -33,22 +26,29 @@ jars.forEach((jar) => {
                 jar.appendChild(activeBall);
                 activeBall.classList.add('disable-click');
 
-                const ballsInJar = jar.querySelectorAll('.ball');
-                ballsInJar.forEach( (ballInJar,index) => {
-                    ballInJar.classList.add('position');
-                    if(window.innerWidth >= 768){
-                        ballInJar.style.bottom = `${50 * index}px`
-    
-                    }else {
-                        ballInJar.style.bottom = `${40 * index}px`
-                    }
-                    
-                });
+                const updatedBallsInJar = jar.querySelectorAll('.ball');
+                if(updatedBallsInJar.length > 0){
+                    jar.style.animationPlayState = 'paused';
+                    updatedBallsInJar.forEach( (ballInJar,index) => {
+                        ballInJar.style.animationPlayState = 'paused';
+                        ballInJar.classList.add('position');
+                        if(window.innerWidth >= 768){
+                            ballInJar.style.bottom = `${55 * index}px`
+        
+                        }else {
+                            ballInJar.style.bottom = `${45 * index}px`
+                        }
+                    });
+                }
+
+                if(updatedBallsInJar.length === 0) {
+                    jar.style.animationPlayState = 'running';
+                }
 
                 activeBall = null;
                 lastInteractedJar = jar;
             }else {
-                window.alert('the jar is full, choose another jar to insert the ball');
+                window.alert('this container is full, choose another contianer to insert the ball');
             }
         }else if(topMostBallInJar){
 
@@ -62,10 +62,8 @@ jars.forEach((jar) => {
 ballsContainer.addEventListener("click",() => {
 
     if(lastInteractedJar){
-        console.log(lastInteractedJar)
         const ballsInLastClickedJar = lastInteractedJar.querySelectorAll('.ball');
         const topMostBallInLastClickedJar = ballsInLastClickedJar[ballsInLastClickedJar.length - 1];
-        console.log(topMostBallInLastClickedJar)
 
         if(topMostBallInLastClickedJar && !ballsContainer.contains(topMostBallInLastClickedJar)){
             ballsContainer.appendChild(topMostBallInLastClickedJar);
@@ -75,13 +73,16 @@ ballsContainer.addEventListener("click",() => {
             const remainingBallsInJar = lastInteractedJar.querySelectorAll('.ball');
             remainingBallsInJar.forEach((remainingBall, index) =>{
                 if(window.innerWidth >= 768){
-                    remainingBall.style.bottom = `${50 * index}px`;
+                    remainingBall.style.bottom = `${55 * index}px`;
 
                 }else {
-                    remainingBall.style.bottom = `${40 * index}px`;
+                    remainingBall.style.bottom = `${45 * index}px`;
                 }
-               
             });
+
+            if (remainingBallsInJar.length === 0) {
+                lastInteractedJar.style.animationPlayState = 'running';
+            }
 
             activeBall = null;
         }
