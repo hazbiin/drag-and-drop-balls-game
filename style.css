@@ -158,6 +158,7 @@ body{
 }
 .ball.on-move{
     background: #d2c0e7;
+    color: #220a3d;
 }
 .ball.was-moved{
     opacity: 0.7;
